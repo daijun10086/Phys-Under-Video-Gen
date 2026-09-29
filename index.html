@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Does One Prompt Represent a Physical Scenario?</title>
+<meta name="description" content="Physics benchmarks for video generation represent each scenario by a single prompt. Equivalent rewrites change scores, pass decisions, and model rankings. Prompt Set Evaluation scores each scenario over a set of validated equivalent prompts.">
+<meta property="og:title" content="Does One Prompt Represent a Physical Scenario? Physics Evaluation through Prompt Sets">
+<meta property="og:description" content="Equivalent rewrites of a benchmark prompt change the physics score in about a third of comparisons. Prompt Set Evaluation scores each scenario over validated equivalent prompts.">
+<meta property="og:image" content="assets/poster.jpg">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="hero shell">
+  <p class="eyebrow">Under double-blind review &middot; anonymous authors</p>
+  <h1>Does One Prompt Represent<br>a Physical Scenario?</h1>
+  <p class="subtitle">Physics Evaluation through Prompt Sets</p>
+  <nav class="links" aria-label="Resources">
+    <span class="chip is-off" title="Released after the review period">Paper &middot; after review</span>
+    <a class="chip" href="#video">Video</a>
+    <span class="chip is-off" title="Released upon acceptance">Data &amp; code &middot; upon acceptance</span>
+    <a class="chip" href="#cite">BibTeX</a>
+  </nav>
+</header>
+
+<section id="video" class="shell screening" aria-label="Video">
+  <div class="player">
+    <video id="film" controls playsinline preload="metadata" poster="assets/poster.jpg">
+      <source src="assets/promptset_animation.mp4" type="video/mp4">
+    </video>
+  </div>
+  <ol class="chapters" id="chapters">
+    <li><button data-t="0"><span class="t">0:00</span>How physics benchmarks score a video</button></li>
+    <li><button data-t="21.4"><span class="t">0:21</span>One word changes the verdict</button></li>
+    <li><button data-t="45.6"><span class="t">0:45</span>900 videos, five models</button></li>
+    <li><button data-t="70.3"><span class="t">1:10</span>Prompt Set Evaluation</button></li>
+    <li><button data-t="112"><span class="t">1:52</span>Where the sensitivity comes from</button></li>
+    <li><button data-t="140.7"><span class="t">2:20</span>Evaluate scenarios, not prompts</button></li>
+  </ol>
+</section>
+
+<section class="shell summary" aria-labelledby="summary-h">
+  <h2 id="summary-h" class="sr-only">Summary</h2>
+  <p class="lede">Physics benchmarks for video generation describe each physical scenario with <em>one</em> prompt. Rewording that prompt without changing its meaning or its physics changes the physical score in about a third of comparisons, flips pass decisions, and reorders the models. We propose to score each scenario over a set of validated equivalent prompts.</p>
+  <dl class="stats">
+    <div><dt>35.5% <span>/</span> 35.7%</dt><dd>of rewrites change the physical score (VideoPhy-2 / PhyGenBench)</dd></div>
+    <div><dt>13.3%</dt><dd>of rewrites flip the official VideoPhy-2 pass decision</dd></div>
+    <div><dt>4 of 5</dt><dd>models change rank on each benchmark</dd></div>
+    <div><dt>8.8% &rarr; 3.9%</dt><dd>standard error of a VideoPhy-2 scenario score, one prompt vs. five</dd></div>
+  </dl>
+  <details class="abstract">
+    <summary>Abstract</summary>
+    <p>Evaluating whether video generation models understand the physical world is essential, since physical understanding is a prerequisite for their use as world models. Existing physics benchmarks generate a video from a text prompt describing a physical scenario and score its physical plausibility. However, each scenario is represented by a single prompt, although it can be described in many semantically and physically equivalent ways. We show that this single-prompt design makes the evaluation sensitive to the choice of prompt. Using a large language model, we rewrite benchmark prompts while preserving their semantics and physics, and evaluate five video generation models on VideoPhy-2 and PhyGenBench with fixed seeds. Rewriting alone changes the physical score in 35.5% and 35.7% of cases, flips the official pass decision in 13.3%, and changes the point ranking of 4 of the 5 models on each benchmark. To address this prompt sensitivity, we propose Prompt Set Evaluation, which scores each scenario over a set of validated equivalent prompts and reports the mean score with its variation; five prompts per scenario substantially improve the stability of scores and rankings. The sensitivity is not random noise, since it persists under fully repeatable evaluators. In a blinded human study of video pairs whose scores differ, raters seldom share the evaluator's preference and judge about half of the pairs equally plausible, which suggests that the vision-language models serving as evaluators also respond to differences between videos unrelated to physics. Physical understanding should therefore be evaluated over a distribution of descriptions rather than a single prompt.</p>
+  </details>
+</section>
+
+<section class="shell block" id="example" aria-labelledby="example-h">
+  <p class="eyebrow">1 &middot; An example</p>
+  <h2 id="example-h">Six descriptions of one event, two verdicts</h2>
+  <p class="prose">The six prompts below describe the same event; the highlighted words are the only differences from the benchmark's original prompt. CogVideoX-5B generates each video from the same seed, and the VideoPhy-2 evaluator asks the same physical-commonsense question of every video. The original prompt fails; all five rewrites pass.</p>
+  <div class="example">
+    <ol class="prompt-list" id="prompt-list" aria-label="Equivalent prompts"></ol>
+    <figure class="example-view">
+      <div class="frames" id="frames"></div>
+      <dl class="verdict" id="verdict"></dl>
+      <figcaption>VideoPhy-2 scenario <code>test_00408</code>, CogVideoX-5B, fixed generation seed. Physical commonsense (PC) and semantic adherence (SA) are rated 1&ndash;5; a video passes if both reach 4.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="shell block" id="scale" aria-labelledby="scale-h">
+  <p class="eyebrow">2 &middot; Prompt sensitivity of existing benchmarks</p>
+  <h2 id="scale-h">Rewriting alone moves scores, decisions, and rankings</h2>
+  <p class="prose">We took 15 scenarios from each of VideoPhy-2 and PhyGenBench, rewrote each prompt five times, and generated a video from every prompt with five models at a fixed seed: 900 videos. Each cell below is one video; rows are scenarios, and each model's block starts with the original prompt followed by its five rewrites. A rewrite is colored by how its physical score compares with the original's. Point at a cell to read its prompt.</p>
+  <div class="grids" id="grids"></div>
+  <div class="grid-legend" aria-hidden="true">
+    <span><i class="sw sw-orig"></i>original prompt</span>
+    <span><i class="sw sw-up"></i>score higher</span>
+    <span><i class="sw sw-down"></i>score lower</span>
+    <span><i class="sw sw-same"></i>unchanged</span>
+    <span><i class="sw sw-flip"></i>decision flipped</span>
+  </div>
+  <div class="cell-detail" id="cell-detail" aria-live="polite">Point at or tap a cell to see its prompt and scores.</div>
+
+  <div class="two-col">
+    <div>
+      <h3>Every model is affected</h3>
+      <div class="table-wrap">
+        <table class="num" id="model-table">
+          <thead>
+            <tr><th rowspan="2">Model</th><th colspan="2">VideoPhy-2</th><th colspan="2">PhyGenBench</th></tr>
+            <tr><th>score changed</th><th>pass flipped</th><th>score changed</th><th>final &ge; 2 flipped</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="note">Percent of 75 original-to-rewrite comparisons per model. Rewrites raise the score about as often as they lower it, so the effect cancels in averages and shows only per scenario.</p>
+    </div>
+    <div>
+      <h3>The leaderboard reshuffles</h3>
+      <div class="seg" role="radiogroup" aria-label="Ranking basis">
+        <button role="radio" aria-checked="true" data-basis="orig">Original prompt</button>
+        <button role="radio" aria-checked="false" data-basis="set">Prompt set (6 prompts)</button>
+      </div>
+      <div class="boards" id="boards"></div>
+      <p class="note">VideoPhy-2: pass rate. PhyGenBench: final score divided by 3. Marked rows change rank. None of the rank differences under the original prompt is statistically resolved.</p>
+    </div>
+  </div>
+</section>
+
+<section class="shell block" id="method" aria-labelledby="method-h">
+  <p class="eyebrow">3 &middot; Method</p>
+  <h2 id="method-h">Prompt Set Evaluation</h2>
+  <p class="prose">A benchmark reports the evaluation result at one fixed description <span class="math">p_0</span> of scenario <span class="math">s</span>. Prompt Set Evaluation targets the expected physical score over the distribution <span class="math">Q_s</span> of valid descriptions, and estimates it with a set of <span class="math">K</span> validated equivalent prompts that every model shares:</p>
+  <div class="equations">
+    <div class="math-display">\theta_m(s)=\mathbb{E}_{p\sim Q_s}\big[\,Y_m(s,p)\,\big]</div>
+    <div class="math-display">\widehat\theta_m(s)=\frac{1}{K}\sum_{k=1}^{K}Y_m(s,p_k)</div>
+  </div>
+  <p class="prose">The spread of the <span class="math">K</span> scores is reported with the mean. The benchmark's scenarios, criteria, and evaluator stay unchanged.</p>
+  <ol class="steps">
+    <li><h3>Rewrite</h3><p>A language model rewrites the original prompt under an instruction that permits grammatical restructuring, voice changes, and conservative synonyms, and forbids adding or removing objects, quantities, actions, directions, materials, forces, camera instructions, or scene details.</p></li>
+    <li><h3>Validate</h3><p>Human annotators accept 95.0% of sampled rewrites and reject none; three language-model judges accept 96.7&ndash;100%. Annotators reject 80% of control rewrites in which a physical detail was altered. No video or score is seen during construction.</p></li>
+    <li><h3>Evaluate</h3><p>Every model is scored on the same <span class="math">K</span> prompts. A different seed per prompt also covers sampling variation at no extra cost.</p></li>
+  </ol>
+
+  <h3 class="chart-title">How many prompts are enough?</h3>
+  <div class="k-control">
+    <label for="k">Prompts per scenario, <span class="math">K</span> = <output id="k-out">5</output></label>
+    <input id="k" type="range" min="1" max="6" step="1" value="5">
+  </div>
+  <div class="k-charts" id="k-charts"></div>
+  <p class="note">Left: standard error of a scenario's physical score, in percent of the score range, averaged over scenarios and models. Right: how often two independent <span class="math">K</span>-prompt evaluations order a pair of models the same way (10,000 resampled draws). With five prompts the standard error is less than half of the single-prompt value, and a sixth prompt adds little. For the two models evaluated on an independently constructed second prompt set, the two sets give benchmark scores within 3% of the score range.</p>
+</section>
+
+<section class="shell block" id="source" aria-labelledby="source-h">
+  <p class="eyebrow">4 &middot; Attribution</p>
+  <h2 id="source-h">Where the sensitivity comes from</h2>
+  <p class="prose">The sensitivity is not evaluator noise: it persists when the evaluator is fully repeatable. Human raters, however, rarely see the difference the evaluator reports, which suggests that the vision-language evaluators also respond to differences between videos unrelated to physics.</p>
+  <div class="evidence">
+    <article>
+      <p class="big">0 changes</p>
+      <p>in 2,250 repeated VideoPhy-2 evaluations of identical videos. Its response to rewriting is entirely a response to the videos.</p>
+    </article>
+    <article>
+      <p class="big">35.0% <span>vs</span> 4.2%</p>
+      <p>of the score range: change caused by rewriting vs. variation from rescoring the same videos five times, on PhyGenBench pairs whose score changed. Rewriting is about eight times larger.</p>
+    </article>
+    <article>
+      <p class="big">31.4%</p>
+      <p>of comparisons still change the PhyGenBench score when GPT-4o is replaced by a fully repeatable local model (Qwen3.6-27B, greedy decoding), against 36.1% with GPT-4o.</p>
+    </article>
+  </div>
+
+  <h3 class="chart-title">What people see in 80 video pairs whose scores differ</h3>
+  <div class="human" id="human"></div>
+  <p class="note">Four raters, blind to the model, the prompts, and the scores, judged which video is physically more plausible. Bars count pairs on which at least three raters agree. Among the 32 pairs in which both videos show the described event, 28 are judged equally plausible. The raters identified the incorrect video in all six control pairs.</p>
+</section>
+
+<section class="shell block" id="seeds" aria-labelledby="seeds-h">
+  <p class="eyebrow">5 &middot; Prompts and seeds</p>
+  <h2 id="seeds-h">Rewording a prompt matters as much as resampling the video</h2>
+  <p class="prose">On five VideoPhy-2 scenarios, CogVideoX-5B and Wan2.1-14B generated each of the six prompts with the same five new seeds. Changing the prompt at a fixed seed moves the physical-commonsense score about as much as changing the seed at a fixed prompt, yet only the seed is usually treated as a source of variation.</p>
+  <div class="seedbars" id="seedbars"></div>
+  <p class="note">Mean absolute change of the PC score, in percent of the score range; 150 videos per model. The paired intervals of the difference include zero.</p>
+</section>
+
+<section class="shell block" id="takeaway" aria-labelledby="takeaway-h">
+  <p class="eyebrow">6 &middot; Recommendations</p>
+  <h2 id="takeaway-h">Evaluate scenarios, not prompts</h2>
+  <ul class="recs">
+    <li>Benchmarks should release validated prompt sets and report the spread across prompts with the mean.</li>
+    <li>Five prompts per scenario, each with its own seed, cover both the choice of description and sampling variation.</li>
+    <li>Hosted evaluator stages flip about one decision in ten on repeat and should be scored repeatedly.</li>
+    <li>Prompt sets stabilize the evaluation but do not make an evaluator more faithful to physics; evaluators invariant to non-physical differences are the next step.</li>
+  </ul>
+  <p class="note">Scope: two benchmarks with 15 scenarios each and five models; text-conditioned generation scored by model-based evaluators. The human study has four raters and shows that evaluator and human judgments diverge without identifying the cause.</p>
+</section>
+
+<section class="shell block" id="cite" aria-labelledby="cite-h">
+  <h2 id="cite-h">BibTeX</h2>
+  <div class="bib">
+    <pre id="bibtex">@misc{anonymous2026promptset,
+  title  = {Does One Prompt Represent a Physical Scenario?
+            Physics Evaluation through Prompt Sets},
+  author = {Anonymous},
+  year   = {2026},
+  note   = {Under review}
+}</pre>
+    <button type="button" id="copy-bib">Copy</button>
+  </div>
+</section>
+
+<footer class="shell footer">
+  <p>The animation's narration is synthesized speech. Prompt sets, equivalence judgments, per-video scores, de-identified human ratings, and code will be released upon acceptance.</p>
+</footer>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="assets/app.js"></script>
+</body>
+</html>
